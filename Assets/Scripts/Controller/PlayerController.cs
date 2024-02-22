@@ -17,6 +17,19 @@ public class PlayerController : MonoBehaviour
     float currentAngleY;
 
 
+    [SerializeField]GameObject go_NotCamDown;
+    [SerializeField]GameObject go_NotCamUp;
+    [SerializeField]GameObject go_NotCamLeft;
+    [SerializeField]GameObject go_NotCamRight;
+
+    float originPosY;
+
+    void Start()
+    {
+        originPosY = tf_Cam.localPosition.y;
+        print(originPosY);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -25,8 +38,29 @@ public class PlayerController : MonoBehaviour
         ViewMoving();
         KeyViewMoving();
         CameraLimit();
+        NotCamUI();
     }
-    void CameraLimit()
+
+    void NotCamUI()
+    {
+        go_NotCamDown.SetActive(false); //일단 다 비활성화한다.
+        go_NotCamUp.SetActive(false);
+        go_NotCamLeft.SetActive(false);
+        go_NotCamRight.SetActive(false);
+
+        //이제 활성화되는 조건을 건다. => 더이상 움직이지 못할 때(리밋이랑 같거나 클 때)
+        if (currentAngleY >= lookLimitX)
+            go_NotCamRight.SetActive(true);
+        else if (currentAngleY <= -lookLimitX)
+            go_NotCamLeft.SetActive(true);
+
+        if (currentAngleX <= -lookLimitY)
+            go_NotCamUp.SetActive(true);
+        else if (currentAngleX >= lookLimitY)
+            go_NotCamDown.SetActive(true);
+    }
+
+    void CameraLimit() //y축의 1을 변수로 바꿔주는것이 좋다. =>1대신 쓸 변수 선언
     {
         if (tf_Cam.localPosition.x >= camBoundary.x)
         {
@@ -39,11 +73,11 @@ public class PlayerController : MonoBehaviour
 
         if (tf_Cam.localPosition.y >= camBoundary.y)
         {
-            tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x, 1 + camBoundary.y, tf_Cam.localPosition.z); //지금 y좌표가 1이 더해져있어서 그걸 꼭 생각해야댐
+            tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x, originPosY + camBoundary.y, tf_Cam.localPosition.z); //지금 y좌표가 1이 더해져있어서 그걸 꼭 생각해야댐
         }
         else if (tf_Cam.localPosition.y <= -camBoundary.y)
         {
-            tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x, 1 -camBoundary.y, tf_Cam.localPosition.z); 
+            tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x, originPosY - camBoundary.y, tf_Cam.localPosition.z); 
         }
     }
 
