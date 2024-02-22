@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]GameObject go_NotCamLeft;
     [SerializeField]GameObject go_NotCamRight;
 
-    float originPosY;
+    float originPosY ;
 
     void Start()
     {
@@ -71,11 +71,11 @@ public class PlayerController : MonoBehaviour
             tf_Cam.localPosition = new Vector3(-camBoundary.x, tf_Cam.localPosition.y, tf_Cam.localPosition.z); //이건 -로 고정시켜버림
         }
 
-        if (tf_Cam.localPosition.y >= camBoundary.y)
+        if (tf_Cam.localPosition.y >= originPosY + camBoundary.y) //여기도 y위치 생각해야댐
         {
             tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x, originPosY + camBoundary.y, tf_Cam.localPosition.z); //지금 y좌표가 1이 더해져있어서 그걸 꼭 생각해야댐
         }
-        else if (tf_Cam.localPosition.y <= -camBoundary.y)
+        else if (tf_Cam.localPosition.y <= originPosY - camBoundary.y)
         {
             tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x, originPosY - camBoundary.y, tf_Cam.localPosition.z); 
         }
