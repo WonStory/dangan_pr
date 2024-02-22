@@ -978,6 +978,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tf_Crosshair: {fileID: 1879071977}
+  tf_Cam: {fileID: 963194228}
+  sightSensivitity: 1
+  lookLimitX: 0
+  lookLimitY: 0
 --- !u!1 &688182974
 GameObject:
   m_ObjectHideFlags: 0
