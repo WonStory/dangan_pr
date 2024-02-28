@@ -11,12 +11,15 @@ public class InteractionController : MonoBehaviour
     [SerializeField] GameObject go_NomalCrosshair;
     [SerializeField] GameObject go_interactiveCrosshair;
     bool isContact = false; //Contact함수의 길이가 길어지면 자꾸 검사하는게 쓸데없어짐. 따로 변수를 만들어서 관리
+    bool isInteract = false; //인터렉트하고 있는지 불값으로 나타낸다.
 
+    [SerializeField] ParticleSystem ps_QuestionEffect;
 
     // Update is called once per frame
     void Update()
     {
         CheckObject();
+        ClickLeftBtn();
     }
 
     void CheckObject()
@@ -61,6 +64,27 @@ public class InteractionController : MonoBehaviour
             go_NomalCrosshair.SetActive(true);
         }
         
+    }
+
+    void ClickLeftBtn()
+    {
+        if (Input.GetMouseButtonDown(0)) //마우스클릭을 나타내는 함수고, 0은 좌클릭을 나타낸다.
+        {
+            if (isContact)
+            {
+                interact();
+            }
+        }
+    }
+
+    void interact()
+    {
+        isInteract= true;
+
+        ps_QuestionEffect.gameObject.SetActive(true);
+        Vector3 t_targetPos = hitInfo.transform.position; //부딫힌 녀석의 인포를 가져오고
+        ps_QuestionEffect.GetComponent<QuestionEfeect>().SetTarget(t_targetPos); //붙여둔 스크립트를 가져와서 퍼블릭으로 설정한 셋타겟에 타겟포스를 넘겨준다.
+        ps_QuestionEffect.transform.position = cam.transform.position;//캠의 위치로 바꿔준다.(현재 위치에서 던지는 것 처럼 하기위해)
     }
 
 
