@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class InteractionController : MonoBehaviour
 {
@@ -13,11 +16,16 @@ public class InteractionController : MonoBehaviour
     [SerializeField] GameObject go_Crosshair; //크로스헤어 부모객체
     [SerializeField] GameObject go_Cursor; //커서, 대화할때 비활성화 하도록
 
+    [SerializeField] GameObject go_TargetNameBar;
+    [SerializeField] TextMeshProUGUI txt_TargetName;
 
     bool isContact = false; //Contact함수의 길이가 길어지면 자꾸 검사하는게 쓸데없어짐. 따로 변수를 만들어서 관리
     public static bool isInteract = false; //인터렉트하고 있는지 불값으로 나타낸다.
 
     [SerializeField] ParticleSystem ps_QuestionEffect;
+
+    [SerializeField] Image img_Interaction; //마름모꼴이 생겼다가 서서히 사라지도록
+    [SerializeField] Image img_InteractionEffect;
 
     DialogueManager theDM;
 
@@ -54,15 +62,19 @@ public class InteractionController : MonoBehaviour
     
     }
 
-    void Contact()
+    void Contact() //객체가 닿은 부분
     {
         if (hitInfo.transform.CompareTag("Interaction"))
         {
+            go_TargetNameBar.SetActive(true);
+            txt_TargetName.text = hitInfo.transform.GetComponent<InteractionType>().GetName();
             if (!isContact) //일단 실행을 한 뒤에 트루가 되므로 계속해서 검사를 하지 않는다.(실행을 하지 않는다.)
             {
                 isContact = true;
                 go_interactiveCrosshair.SetActive(true);
                 go_NomalCrosshair.SetActive(false);
+                StopCoroutine("Interaction");
+                StartCoroutine("Interaction",true); //빠르게 반복하면 코루틴이 반복실행된다. 자연스럽게 생기고 낫컨택트일땐 자연스럽게 사라지고
             }
             
         }
@@ -76,11 +88,42 @@ public class InteractionController : MonoBehaviour
     {
         if (isContact)
         {
+            go_TargetNameBar.SetActive(false);
             isContact = false;
             go_interactiveCrosshair.SetActive(false);
             go_NomalCrosshair.SetActive(true);
+            StopCoroutine("Interaction");
+            StartCoroutine("Interaction",false);
         }
         
+    }
+
+    IEnumerator Interaction(bool p_Appear)
+    {
+        Color color = img_Interaction.color; //자체가 가지고 있는 컬러를 넣어준다.
+        if (p_Appear)
+        {
+            color.a = 0; //투명한 상태로 초기화
+            while (color.a <1) //1이 완전히 불투명
+            {
+                color.a +=0.1f;
+                img_Interaction.color = color;
+                yield return null; //한프레임 대기시켜주는거임
+            }
+        }
+        else
+        {
+            while (color.a > 0)
+            {
+                color.a -= 0.1f;
+                img_Interaction.color = color;
+                yield return null; //한프레임 대기시켜주는거임
+            }
+        }
+                
+        
+
+
     }
 
     void ClickLeftBtn()
