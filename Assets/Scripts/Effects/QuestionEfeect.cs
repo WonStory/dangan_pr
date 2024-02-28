@@ -9,6 +9,10 @@ public class QuestionEfeect : MonoBehaviour
 
     [SerializeField] ParticleSystem ps_Effect;
 
+    public static bool isCollide = false; //쉽게 참조 변경을 가능하게, 그리고 일단 안 부딪혔으니 폴스
+
+    
+
     public void SetTarget(Vector3 _target) //타겟의 위치설정
     {
         targetPos = _target; //목표물의 위치
@@ -30,6 +34,7 @@ public class QuestionEfeect : MonoBehaviour
             ps_Effect.gameObject.SetActive(true);
             ps_Effect.transform.position = transform.position;
             ps_Effect.Play();
+            isCollide = true;
             targetPos = Vector3.zero;
             gameObject.SetActive(false);
             }

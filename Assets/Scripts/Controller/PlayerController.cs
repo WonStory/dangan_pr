@@ -34,11 +34,14 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //마우스 움직임에 따라 업데이트 해줘야되므로 크로스헤어를 여기에 해준다.
-        CrosshairMovig();
-        ViewMoving();
-        KeyViewMoving();
-        CameraLimit();
-        NotCamUI();
+        if (!InteractionController.isInteract)//대화가 아닐 때만 이 기능들이 작동하도록ㄴ
+        {
+            CrosshairMovig();
+            ViewMoving();
+            KeyViewMoving();
+            CameraLimit();
+            NotCamUI();
+        }
     }
 
     void NotCamUI()
