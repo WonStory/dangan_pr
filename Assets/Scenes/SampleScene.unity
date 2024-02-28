@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.447271, g: 0.49719888, b: 0.5752001, a: 1}
+  m_IndirectSpecularColor: {r: 0.44727063, g: 0.4971984, b: 0.57519925, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1074,6 +1074,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 688182975}
+  - component: {fileID: 688182976}
   m_Layer: 0
   m_Name: BongRan
   m_TagString: Interaction
@@ -1097,6 +1098,27 @@ Transform:
   - {fileID: 1294463594}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &688182976
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688182974}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.4676517, y: 1.5193121, z: 0.24689533}
+  m_Center: {x: 0.05363716, y: 0.25965607, z: -0.009284727}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
