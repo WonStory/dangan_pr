@@ -33,6 +33,8 @@ public class InteractionController : MonoBehaviour
     {
         go_Crosshair.SetActive(false);
         go_Cursor.SetActive(false);
+        go_TargetNameBar.SetActive(false);
+
     }
 
     void Start()
@@ -43,8 +45,11 @@ public class InteractionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckObject();
-        ClickLeftBtn();
+        if (!isInteract) //이걸로 계속 체크하지 않도록함
+        {
+            CheckObject();
+            ClickLeftBtn();
+        }
     }
 
     void CheckObject()
@@ -74,7 +79,9 @@ public class InteractionController : MonoBehaviour
                 go_interactiveCrosshair.SetActive(true);
                 go_NomalCrosshair.SetActive(false);
                 StopCoroutine("Interaction");
+                StopCoroutine("InteractionEffect");
                 StartCoroutine("Interaction",true); //빠르게 반복하면 코루틴이 반복실행된다. 자연스럽게 생기고 낫컨택트일땐 자연스럽게 사라지고
+                StartCoroutine("InteractionEffect");
             }
             
         }
@@ -115,16 +122,37 @@ public class InteractionController : MonoBehaviour
         {
             while (color.a > 0)
             {
-                color.a -= 0.1f;
+                color.a -= 0.01f;
                 img_Interaction.color = color;
                 yield return null; //한프레임 대기시켜주는거임
             }
         }
-                
-        
-
-
     }
+
+    IEnumerator InteractionEffect()
+    {
+        while (isContact && !isInteract)//상호작용이 가능한데 좌클릭을 안한 상태, 다시 초기화하고 반복
+        {
+            Color color = img_InteractionEffect.color;
+            color.a = 0.5f;
+
+            img_InteractionEffect.transform.localScale = new Vector3(1.3f,1.3f,1.3f);
+            Vector3 t_scale = img_InteractionEffect.transform.localScale;
+
+            while (color.a > 0)
+            {
+                color.a -= 0.005f;
+                img_InteractionEffect.color = color;
+                t_scale.Set(t_scale.x + Time.deltaTime, t_scale.y + Time.deltaTime, t_scale.z + Time.deltaTime);
+                img_InteractionEffect.transform.localScale = t_scale;
+                yield return null;
+            }
+            yield return null; //한프레임 대기
+        }
+    }
+
+    
+    
 
     void ClickLeftBtn()
     {
@@ -143,6 +171,11 @@ public class InteractionController : MonoBehaviour
     void interact()
     {
         isInteract= true;
+
+        StopCoroutine("Interaction"); //상호작용중일 때 코루틴을 우선 정지시키고(이펙트는 while문으로 이미 없어짐), 투명도를 바꾼다.
+        Color color = img_Interaction.color;
+        color.a =0;
+        img_Interaction.color = color;
 
         ps_QuestionEffect.gameObject.SetActive(true);
         Vector3 t_targetPos = hitInfo.transform.position; //부딫힌 녀석의 인포를 가져오고
