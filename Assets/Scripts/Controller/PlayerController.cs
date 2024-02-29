@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         originPosY = tf_Cam.localPosition.y;
-        print(originPosY);
     }
 
     // Update is called once per frame
