@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CameraType //열거형 자료라는 뜻 선택지처럼 고를 수 있게 해준다.
+{
+    ObjectFront,
+    Reset,
+}
+
 
 
 
@@ -10,6 +16,7 @@ using UnityEngine;
 public class Dialogue //모노비헤이비어를 상속 안받아서 스타트 업뎃 다 쓸모없음
 {
     [Header("카메라가 타게팅 하는 대상")]
+    public CameraType cameraType;
     public Transform tf_target;
 
     //[Tooltip("대사 치는 캐릭터 이름")]

@@ -5,13 +5,38 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 
+    Vector3 originPos; //카메라가 있던 위치, 각도
+    Quaternion originRot;
 
-    public void CameraTargetting(Transform p_Target, float p_CamSpeed = 0.05f)
+    InteractionController theIC;
+    PlayerController thePlayer;
+
+    void Start()
     {
-        if (p_Target != null)
+        theIC = FindObjectOfType<InteractionController>();
+        thePlayer = FindObjectOfType<PlayerController>();
+    }
+
+    public void CamOriginSetting()
+    {
+        originPos = transform.position;
+        originRot = Quaternion.Euler(0,0,0); //정면을 보도록
+    }
+
+    public void CameraTargetting(Transform p_Target, float p_CamSpeed = 0.05f, bool p_isReset = false, bool p_isFinish = false)
+    {
+        StopAllCoroutines();//다시 재생될 때 코루틴이 꼬이지 않도록 정지시키고 실행한다.
+        if (!p_isReset) //프론트의 경우
         {
-            StopAllCoroutines();//다시 재생될 때 코루틴이 꼬이지 않도록 정지시키고 실행한다.
-            StartCoroutine(CameraTargettingCoroutine(p_Target,p_CamSpeed));
+            if (p_Target != null)
+            {
+            
+                StartCoroutine(CameraTargettingCoroutine(p_Target,p_CamSpeed));
+            }
+        }
+        else
+        {
+            StartCoroutine(CameraResetCoroutine(p_CamSpeed,p_isFinish));
         }
         
     }
@@ -19,7 +44,7 @@ public class CameraController : MonoBehaviour
     IEnumerator CameraTargettingCoroutine(Transform p_Target, float p_CamSpeed = 0.05f)
     {
         Vector3 t_TargetPos = p_Target.position;
-        Vector3 t_TargetFrontPos = t_TargetPos + p_Target.forward;//타게팅된 대상의 정면 위치를 기억시켜준다. 대상과 정해진 거리만큼 떨어뜨려논다.
+        Vector3 t_TargetFrontPos = t_TargetPos + p_Target.forward;//타게팅된 대상의 정면 위치를 기억시켜준다. 대상과 정해진 거리만큼 떨어뜨려논다.(멀리보고싶으면 포워드에 곱해준다)
         Vector3 t_Direction = (t_TargetPos - t_TargetFrontPos).normalized; //상대방 정면에서 바라보려면 방향성이 있어야된다. 경우에 따라서 천차만별이므로 정규화 시켜준다.
 
         while (transform.position != t_TargetFrontPos || Quaternion.Angle(transform.rotation, Quaternion.LookRotation(t_Direction)) >= 0.5f)//각도차이가 거의 없을 때 까지라는 or조건문도 추가 시킨다.
@@ -30,5 +55,23 @@ public class CameraController : MonoBehaviour
         }
 
 
+    }
+
+    IEnumerator CameraResetCoroutine(float p_CamSpeed = 0.05f, bool p_isFinish = false)
+    {
+        yield return new WaitForSeconds(0.5f); //잠시 대기시켰다가 초기화 하고싶음
+        while (transform.position != originPos || Quaternion.Angle(transform.rotation, originRot) >= 0.5f)//각도차이가 거의 없을 때 까지라는 or조건문도 추가 시킨다.
+        {
+            transform.position = Vector3.MoveTowards(transform.position, originPos, p_CamSpeed); //자기 위치에서 상대방 위치까지 캠스피드로
+            transform.rotation = Quaternion.Lerp(transform.rotation, originRot,p_CamSpeed); //대상을 바라보도록 회전시켜줌 , 목적지만 바꿔준다
+            yield return null;
+        }
+        transform.position = originPos; //자기위치로
+
+        if (p_isFinish)
+        {//모든 대화가 끝났으면 리셋
+            thePlayer.Reset();
+            theIC.SettingUI(true);
+        }
     }
 }

@@ -24,6 +24,13 @@ public class PlayerController : MonoBehaviour
 
     float originPosY ;
 
+    public void Reset()
+    {
+        currentAngleX = 0;
+        currentAngleY = 0; //리셋을 시켜줘야 원래 보던 각도로 안보고있음
+        
+    }
+
     void Start()
     {
         originPosY = tf_Cam.localPosition.y;
@@ -33,7 +40,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //마우스 움직임에 따라 업데이트 해줘야되므로 크로스헤어를 여기에 해준다.
-        if (!InteractionController.isInteract)//대화가 아닐 때만 이 기능들이 작동하도록ㄴ
+        if (!InteractionController.isInteract)//대화가 아닐 때만 이 기능들이 작동하도록
         {
             CrosshairMovig();
             ViewMoving();

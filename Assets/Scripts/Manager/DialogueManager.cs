@@ -52,8 +52,7 @@ public class DialogueManager : MonoBehaviour
                         contextCount = 0;
                         if (++lineCount < dialogues.Length)
                         {
-                            theCam.CameraTargetting(dialogues[lineCount].tf_target);//화자가 바뀔 때 카메라를 돌려주면되므로, tf타켓을 설정해뒀으므로 받아서 써준다.
-                            StartCoroutine(TypeWriter());
+                            CameraTargettingType();
                         }
                         else{ //여기선 이제 더이상의 대화가 없으므로 대화를 끝내줘야된다.
                             EndDialogue();
@@ -73,8 +72,20 @@ public class DialogueManager : MonoBehaviour
         txt_Name.text = "";
         theIC.SettingUI(false); //크로스헤어와 화살표 숨기기
         dialogues = p_dialogues;
-        theCam.CameraTargetting(dialogues[lineCount].tf_target);//시작할 때도 설정을 해준다.
-        StartCoroutine(TypeWriter());
+        theCam.CamOriginSetting(); //어디로 돌아갈지 저장해둠
+        //theCam.CameraTargetting(dialogues[lineCount].tf_target);시작할 때도 설정을 해준다.
+        CameraTargettingType();
+    }
+
+    void CameraTargettingType()
+    {
+        switch(dialogues[lineCount].cameraType)
+        {
+            case CameraType.ObjectFront : theCam.CameraTargetting(dialogues[lineCount].tf_target); break;
+            case CameraType.Reset : theCam.CameraTargetting(null, 0.05f, true, false); break; //타겟값은 필요없음 null, 조금 리셋은 트루, 이즈피니쉬는 폴스(엔드에서 줘야댐)
+        
+        }
+        StartCoroutine(TypeWriter());//라셋하든 타게팅하든 출력해야되므로
     }
 
     void EndDialogue()
@@ -84,8 +95,8 @@ public class DialogueManager : MonoBehaviour
         lineCount = 0;
         dialogues =null; //대화를 간직하고 있을 필요가 없음
         isNext = false;
+        theCam.CameraTargetting(null, 0.05f, true, true);
         SettingUI(false);
-        theIC.SettingUI(true);
     }
 
     IEnumerator TypeWriter() //텍스트 출력 코루틴
