@@ -26,11 +26,13 @@ public class DialogueManager : MonoBehaviour
 
     InteractionController theIC;
     CameraController theCam;
+    SpriteManager theSpriteManager;
 
     void Start()
     {
         theIC = FindObjectOfType<InteractionController>();
-        theCam =FindObjectOfType<CameraController>();
+        theCam = FindObjectOfType<CameraController>();
+        theSpriteManager = FindObjectOfType<SpriteManager>();
     }
 
     void Update() //매프레임 키가 입력되었는지 판별을 해줘야된다.
@@ -99,9 +101,21 @@ public class DialogueManager : MonoBehaviour
         SettingUI(false);
     }
 
+    void ChangeSprite()
+    {
+        if (dialogues[lineCount].spriteName[contextCount] != "") //공백일 땐 제외하고
+        {
+            StartCoroutine(theSpriteManager.SpriteChangeCoroutine(dialogues[lineCount].tf_target,
+                                                                  dialogues[lineCount].spriteName[contextCount]));
+        }//tf_타켓에 꼭 넣어줘야 그 인물의 스프라이트가 바뀌는 것이므로 none으로 냅두면 안된다.
+    }
+
+
     IEnumerator TypeWriter() //텍스트 출력 코루틴
     {
         SettingUI(true); //텍스트가 출력될 때 떠야되므로 여기에 넣어줌
+        ChangeSprite();
+
         string t_ReplaceText = dialogues[lineCount].contexts[contextCount]; //한줄이 여기에 들어가게된다.
         t_ReplaceText = t_ReplaceText.Replace("`",","); //컴마를 인식 못하는걸 여기서 치환해준다.
         t_ReplaceText = t_ReplaceText.Replace("\\n","\n"); //텍스트로 인식하기 위해선 슬래쉬를 한번더 해준다.

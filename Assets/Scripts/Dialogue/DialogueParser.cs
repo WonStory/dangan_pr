@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,10 +20,14 @@ public class DialogueParser : MonoBehaviour
             dialogue.name = row[1];
 
             List<string> contextList = new List<string>();
+            List<string> spriteList = new List<string>();
 
             do
             {
                 contextList.Add(row[2]); //이름 한 줄당 대사가 하나밖에 안들어감.
+                spriteList.Add(row[3]); //스프라이트 네임의 위치
+                
+                
                 if (++i <data.Length)
                 {
                     row = data[i].Split(new char[]{','}); //다음줄을 쪼개는 의미, 쪼갠다음 와일을 타고, 대사에 넣을지 말지 반복이 된다.
@@ -34,7 +39,7 @@ public class DialogueParser : MonoBehaviour
             }while (row[0].ToString() == "");
             
             dialogue.contexts = contextList.ToArray();
-
+            dialogue.spriteName = spriteList.ToArray(); //리스트를 배열로 바꿔버린다.
             dialogueList.Add(dialogue);//세트로 묶여서 다이어로그에 들어가게 된다.
             
         }

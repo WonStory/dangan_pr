@@ -26,6 +26,9 @@ public class Dialogue //모노비헤이비어를 상속 안받아서 스타트 �
     //[Tooltip("대사 내용")] =>어차피 내가 채우는 변수가 아니라 카메라만 세팅하게끔 한다.
     [HideInInspector] 
     public string[] contexts;
+
+    [HideInInspector]
+    public string[] spriteName;
 }
 
 [System.Serializable]
