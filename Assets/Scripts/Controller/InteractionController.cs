@@ -28,13 +28,22 @@ public class InteractionController : MonoBehaviour
     [SerializeField] Image img_InteractionEffect;
 
     DialogueManager theDM;
-
+/*
     public void HideUI()
     {
         go_Crosshair.SetActive(false);
         go_Cursor.SetActive(false);
         go_TargetNameBar.SetActive(false);
 
+    }
+*/ // 아래로 병합한 다음 지워준다.
+    public void SettingUI(bool p_flag)
+    {
+        go_Crosshair.SetActive(p_flag);
+        go_Cursor.SetActive(p_flag);
+        go_TargetNameBar.SetActive(p_flag);
+
+        isInteract = !p_flag; //반대로 설정해두면 된다.
     }
 
     void Start()
