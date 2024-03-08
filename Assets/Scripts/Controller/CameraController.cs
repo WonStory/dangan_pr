@@ -11,6 +11,8 @@ public class CameraController : MonoBehaviour
     InteractionController theIC;
     PlayerController thePlayer;
 
+    Coroutine coroutine;
+
     void Start()
     {
         theIC = FindObjectOfType<InteractionController>();
@@ -23,19 +25,23 @@ public class CameraController : MonoBehaviour
         originRot = Quaternion.Euler(0,0,0); //정면을 보도록
     }
 
-    public void CameraTargetting(Transform p_Target, float p_CamSpeed = 0.05f, bool p_isReset = false, bool p_isFinish = false)
+    public void CameraTargetting(Transform p_Target, float p_CamSpeed = 0.1f, bool p_isReset = false, bool p_isFinish = false)
     {
-        StopAllCoroutines();//다시 재생될 때 코루틴이 꼬이지 않도록 정지시키고 실행한다.
+        
         if (!p_isReset) //프론트의 경우
         {
             if (p_Target != null)
             {
-            
-                StartCoroutine(CameraTargettingCoroutine(p_Target,p_CamSpeed));
+                StopAllCoroutines();//다시 재생될 때 코루틴이 꼬이지 않도록 정지시키고 실행한다.
+                coroutine = StartCoroutine(CameraTargettingCoroutine(p_Target,p_CamSpeed));
             }
         }
         else
         {
+            if (coroutine !=null) //지금 동작중이라는 것
+            {
+                StopCoroutine(coroutine);
+            }
             StartCoroutine(CameraResetCoroutine(p_CamSpeed,p_isFinish));
         }
         
@@ -59,7 +65,7 @@ public class CameraController : MonoBehaviour
 
     IEnumerator CameraResetCoroutine(float p_CamSpeed = 0.05f, bool p_isFinish = false)
     {
-        yield return new WaitForSeconds(0.5f); //잠시 대기시켰다가 초기화 하고싶음
+        yield return new WaitForSeconds(0.5f); //잠시 대기시켰다가 초기화 하고싶음 =>리셋이 연속 두번되면 어색함
         while (transform.position != originPos || Quaternion.Angle(transform.rotation, originRot) >= 0.5f)//각도차이가 거의 없을 때 까지라는 or조건문도 추가 시킨다.
         {
             transform.position = Vector3.MoveTowards(transform.position, originPos, p_CamSpeed); //자기 위치에서 상대방 위치까지 캠스피드로

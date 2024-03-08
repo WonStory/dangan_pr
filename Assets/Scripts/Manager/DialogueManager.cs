@@ -162,6 +162,10 @@ public class DialogueManager : MonoBehaviour
                 txt_Name.text = dialogues[lineCount].name; //이름을 넣어줌
             }
         }
+        else
+        {
+            go_DialogueNameBar.SetActive(false);
+        }
 
     }
 }
