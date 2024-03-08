@@ -9,10 +9,15 @@ using UnityEngine;
 
 public class Dialogue //모노비헤이비어를 상속 안받아서 스타트 업뎃 다 쓸모없음
 {
-    [Tooltip("대사 치는 캐릭터 이름")]
+    [Header("카메라가 타게팅 하는 대상")]
+    public Transform tf_target;
+
+    //[Tooltip("대사 치는 캐릭터 이름")]
+    [HideInInspector]
     public string name; //이름은 받아야댐. 어떤 캐릭이 대사하는지
 
-    [Tooltip("대사 내용")]
+    //[Tooltip("대사 내용")] =>어차피 내가 채우는 변수가 아니라 카메라만 세팅하게끔 한다.
+    [HideInInspector] 
     public string[] contexts;
 }
 

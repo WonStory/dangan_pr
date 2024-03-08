@@ -25,10 +25,12 @@ public class DialogueManager : MonoBehaviour
     int contextCount = 0;//대사 카운트, 여러 대사를 할 수 있음으로
 
     InteractionController theIC;
+    CameraController theCam;
 
     void Start()
     {
         theIC = FindObjectOfType<InteractionController>();
+        theCam =FindObjectOfType<CameraController>();
     }
 
     void Update() //매프레임 키가 입력되었는지 판별을 해줘야된다.
@@ -50,6 +52,7 @@ public class DialogueManager : MonoBehaviour
                         contextCount = 0;
                         if (++lineCount < dialogues.Length)
                         {
+                            theCam.CameraTargetting(dialogues[lineCount].tf_target);//화자가 바뀔 때 카메라를 돌려주면되므로, tf타켓을 설정해뒀으므로 받아서 써준다.
                             StartCoroutine(TypeWriter());
                         }
                         else{ //여기선 이제 더이상의 대화가 없으므로 대화를 끝내줘야된다.
@@ -70,7 +73,7 @@ public class DialogueManager : MonoBehaviour
         txt_Name.text = "";
         theIC.SettingUI(false); //크로스헤어와 화살표 숨기기
         dialogues = p_dialogues;
-
+        theCam.CameraTargetting(dialogues[lineCount].tf_target);//시작할 때도 설정을 해준다.
         StartCoroutine(TypeWriter());
     }
 
