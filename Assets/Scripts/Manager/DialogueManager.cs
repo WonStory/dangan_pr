@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -89,21 +90,64 @@ public class DialogueManager : MonoBehaviour
         SettingUI(true); //텍스트가 출력될 때 떠야되므로 여기에 넣어줌
         string t_ReplaceText = dialogues[lineCount].contexts[contextCount]; //한줄이 여기에 들어가게된다.
         t_ReplaceText = t_ReplaceText.Replace("`",","); //컴마를 인식 못하는걸 여기서 치환해준다.
+        t_ReplaceText = t_ReplaceText.Replace("\\n","\n"); //텍스트로 인식하기 위해선 슬래쉬를 한번더 해준다.
 
-        txt_Name.text = dialogues[lineCount].name; //이름을 넣어줌
+
+        bool t_white = false, t_yellow = false, t_cyan = false;
+        bool t_ignore = false; //특수문자를 만나면 생략시키기 위한 변수
+
+
         for (int i = 0; i < t_ReplaceText.Length; i++)
         {
-            txt_Dialogue.text += t_ReplaceText[i];//한글자씩 추가시켜준다. 그리고 대기시킴
+            switch(t_ReplaceText[i]) //특수문자인지 아닌지 체크하는 함수
+            {
+                case 'ⓦ' : t_white = true; t_yellow = false; t_cyan =false; t_ignore =true; break; //특수문자는 이그노어 하도록함.
+                case 'ⓨ' : t_white = false; t_yellow = true; t_cyan =false; t_ignore =true; break;
+                case 'ⓒ' : t_white = false; t_yellow = false; t_cyan =true; t_ignore =true; break;
+            }
+
+            string t_letter = t_ReplaceText[i].ToString(); //이걸 이용해서 색변화를 한다.
+
+            if (!t_ignore)
+            {
+                if (t_white)
+                {
+                    t_letter = "<color=#ffffff>" + t_letter + "</color>";//폰트색 반영 검은색은 000000
+                }
+                else if (t_yellow)
+                {
+                    t_letter = "<color=#ffff00>" + t_letter + "</color>";
+                }
+                else if (t_cyan)
+                {
+                    t_letter = "<color=#42dee3>" + t_letter + "</color>";
+                }
+                txt_Dialogue.text += t_letter;//한글자씩 추가시켜준다. 그리고 대기시킴
+            }
+            t_ignore =false;
             yield return new WaitForSeconds(textDelay);
         }
 
         isNext = true;
-        yield return null;
+        
     }
 
     void SettingUI(bool p_flag)
     {
         go_DialogueBar.SetActive(p_flag);
-        go_DialogueNameBar.SetActive(p_flag);
+
+        if (p_flag)
+        {
+            if (dialogues[lineCount].name == "")
+            {
+                go_DialogueNameBar.SetActive(false);
+            }
+            else
+            {
+                go_DialogueNameBar.SetActive(true);
+                txt_Name.text = dialogues[lineCount].name; //이름을 넣어줌
+            }
+        }
+
     }
 }
