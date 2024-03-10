@@ -26,6 +26,7 @@ public class DialogueManager : MonoBehaviour
 
     InteractionController theIC;
     CameraController theCam;
+    SplashManager theSplashManager;
     SpriteManager theSpriteManager;
 
     void Start()
@@ -33,6 +34,7 @@ public class DialogueManager : MonoBehaviour
         theIC = FindObjectOfType<InteractionController>();
         theCam = FindObjectOfType<CameraController>();
         theSpriteManager = FindObjectOfType<SpriteManager>();
+        theSplashManager = FindObjectOfType<SplashManager>();
     }
 
     void Update() //매프레임 키가 입력되었는지 판별을 해줘야된다.
@@ -54,7 +56,7 @@ public class DialogueManager : MonoBehaviour
                         contextCount = 0;
                         if (++lineCount < dialogues.Length)
                         {
-                            CameraTargettingType();
+                            StartCoroutine(CameraTargettingType());
                         }
                         else{ //여기선 이제 더이상의 대화가 없으므로 대화를 끝내줘야된다.
                             EndDialogue();
@@ -76,13 +78,18 @@ public class DialogueManager : MonoBehaviour
         dialogues = p_dialogues;
         theCam.CamOriginSetting(); //어디로 돌아갈지 저장해둠
         //theCam.CameraTargetting(dialogues[lineCount].tf_target);시작할 때도 설정을 해준다.
-        CameraTargettingType();
+        StartCoroutine(CameraTargettingType());
     }
 
-    void CameraTargettingType()
+    IEnumerator CameraTargettingType()
     {
         switch(dialogues[lineCount].cameraType)
         {
+            case CameraType.FadeIn : SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeIn(false,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break; //검은색화면이라 폴스에 슬로우가 아니므로 트루로
+            case CameraType.FadeOut : SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeOut(false,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break;
+            case CameraType.FlashIn : SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeIn(true,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break;
+            case CameraType.FlashOut : SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeOut(true,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break;
+            
             case CameraType.ObjectFront : theCam.CameraTargetting(dialogues[lineCount].tf_target); break;
             case CameraType.Reset : theCam.CameraTargetting(null, 0.05f, true, false); break; //타겟값은 필요없음 null, 조금 리셋은 트루, 이즈피니쉬는 폴스(엔드에서 줘야댐)
         
