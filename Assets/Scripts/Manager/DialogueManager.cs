@@ -61,7 +61,7 @@ public class DialogueManager : MonoBehaviour
                             StartCoroutine(CameraTargettingType());
                         }
                         else{ //여기선 이제 더이상의 대화가 없으므로 대화를 끝내줘야된다.
-                            EndDialogue();
+                            StartCoroutine(EndDialogue());
                         }
                     }
 
@@ -106,8 +106,13 @@ public class DialogueManager : MonoBehaviour
         StartCoroutine(TypeWriter());//라셋하든 타게팅하든 출력해야되므로
     }
 
-    void EndDialogue()
+    IEnumerator EndDialogue()
     {
+        if (theCutSceneManager.CheckCutScene())
+        {
+            CutSceneManager.isFinished =false; StartCoroutine(theCutSceneManager.CutSceneCoroutine(null, false));//컷씬 안보여주는 것이므로
+            yield return new WaitUntil(()=>CutSceneManager.isFinished);
+        }
         isDialogue =false;
         contextCount = 0;
         lineCount = 0;
@@ -119,7 +124,7 @@ public class DialogueManager : MonoBehaviour
 
     void ChangeSprite()
     {
-        if (dialogues[lineCount].cameraType == CameraType.ObjectFront) //중복해서 넣었으므로 조건문을 걸어야 구분해서 바꿈. 원래는 빈칸만 아니면 호출이라서
+        if (dialogues[lineCount].tf_target != null) //중복해서 넣었으므로 조건문을 걸어야 구분해서 바꿈. 원래는 빈칸만 아니면 호출이라서
         {
             if (dialogues[lineCount].spriteName[contextCount] != "") //공백일 땐 제외하고
             {

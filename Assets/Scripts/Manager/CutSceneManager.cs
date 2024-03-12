@@ -22,6 +22,11 @@ public class CutSceneManager : MonoBehaviour
         theCam = FindObjectOfType<CameraController>();
     }
 
+    public bool CheckCutScene()
+    {
+        return img_CutScene.gameObject.activeSelf;
+    }
+
     public IEnumerator CutSceneCoroutine(string p_CutSceneName, bool p_isShow)//다시 보여줄지 사라질지 불로 설정
     {
         SplashManager.isFinished = false;

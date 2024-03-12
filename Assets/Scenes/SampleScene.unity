@@ -12119,25 +12119,25 @@ MonoBehaviour:
       spriteName: []
       VocieName: []
     - cameraType: 6
-      tf_target: {fileID: 688182975}
-      name: 
-      contexts: []
-      spriteName: []
-      VocieName: []
-    - cameraType: 7
-      tf_target: {fileID: 688182975}
+      tf_target: {fileID: 0}
       name: 
       contexts: []
       spriteName: []
       VocieName: []
     - cameraType: 0
-      tf_target: {fileID: 688182975}
+      tf_target: {fileID: 0}
       name: 
       contexts: []
       spriteName: []
       VocieName: []
     - cameraType: 0
-      tf_target: {fileID: 688182975}
+      tf_target: {fileID: 0}
+      name: 
+      contexts: []
+      spriteName: []
+      VocieName: []
+    - cameraType: 0
+      tf_target: {fileID: 0}
       name: 
       contexts: []
       spriteName: []
