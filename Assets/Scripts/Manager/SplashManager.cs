@@ -16,6 +16,13 @@ public class SplashManager : MonoBehaviour
 
     public static bool isFinished = false;
 
+    public IEnumerator Splash() //순간의 번쩍임을 이 함수로 표현
+    {
+        StartCoroutine(FadeOut(true, false));
+        yield return new WaitUntil(()=>isFinished);//완전 페이드 아웃 되고 실행되어야되므로 대기
+        StartCoroutine(FadeIn(true, false));
+    }
+
     public IEnumerator FadeOut(bool _isWhite, bool _isSlow) //화이트냐 아니냐, 느리게 페이드아웃할건지 아닌지
     {
         Color t_Color = (_isWhite == true) ? colorWhite : colorBlack;

@@ -117,11 +117,19 @@ public class DialogueManager : MonoBehaviour
         }//tf_타켓에 꼭 넣어줘야 그 인물의 스프라이트가 바뀌는 것이므로 none으로 냅두면 안된다.
     }
 
+    void PlaySound()
+    {
+        if (dialogues[lineCount].VocieName[contextCount] != "")
+        {
+            SoundManager.instance.PlaySound(dialogues[lineCount].VocieName[contextCount], 2);
+        }
+    }
 
     IEnumerator TypeWriter() //텍스트 출력 코루틴
     {
         SettingUI(true); //텍스트가 출력될 때 떠야되므로 여기에 넣어줌
         ChangeSprite();
+        PlaySound();
 
         string t_ReplaceText = dialogues[lineCount].contexts[contextCount]; //한줄이 여기에 들어가게된다.
         t_ReplaceText = t_ReplaceText.Replace("`",","); //컴마를 인식 못하는걸 여기서 치환해준다.
@@ -139,6 +147,8 @@ public class DialogueManager : MonoBehaviour
                 case 'ⓦ' : t_white = true; t_yellow = false; t_cyan =false; t_ignore =true; break; //특수문자는 이그노어 하도록함.
                 case 'ⓨ' : t_white = false; t_yellow = true; t_cyan =false; t_ignore =true; break;
                 case 'ⓒ' : t_white = false; t_yellow = false; t_cyan =true; t_ignore =true; break;
+                case '①' : StartCoroutine(theSplashManager.Splash()); SoundManager.instance.PlaySound("emotion0", 1); t_ignore = true; break;
+                case '②' : StartCoroutine(theSplashManager.Splash()); SoundManager.instance.PlaySound("emotion1", 1); t_ignore = true; break;
             }
 
             string t_letter = t_ReplaceText[i].ToString(); //이걸 이용해서 색변화를 한다.

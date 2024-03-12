@@ -33,6 +33,9 @@ public class Dialogue //모노비헤이비어를 상속 안받아서 스타트 �
 
     [HideInInspector]
     public string[] spriteName;
+
+    [HideInInspector]
+    public string[] VocieName;
 }
 
 [System.Serializable]
