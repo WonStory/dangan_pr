@@ -85,10 +85,10 @@ public class DialogueManager : MonoBehaviour
     {
         switch(dialogues[lineCount].cameraType)
         {
-            case CameraType.FadeIn : SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeIn(false,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break; //검은색화면이라 폴스에 슬로우가 아니므로 트루로
-            case CameraType.FadeOut : SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeOut(false,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break;
-            case CameraType.FlashIn : SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeIn(true,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break;
-            case CameraType.FlashOut : SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeOut(true,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break;
+            case CameraType.FadeIn : SettingUI(false); SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeIn(false,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break; //검은색화면이라 폴스에 슬로우가 아니므로 트루로
+            case CameraType.FadeOut : SettingUI(false); SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeOut(false,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break;
+            case CameraType.FlashIn : SettingUI(false); SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeIn(true,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break;
+            case CameraType.FlashOut : SettingUI(false); SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeOut(true,true)); yield return new WaitUntil(()=>SplashManager.isFinished); break;
             
             case CameraType.ObjectFront : theCam.CameraTargetting(dialogues[lineCount].tf_target); break;
             case CameraType.Reset : theCam.CameraTargetting(null, 0.05f, true, false); break; //타겟값은 필요없음 null, 조금 리셋은 트루, 이즈피니쉬는 폴스(엔드에서 줘야댐)

@@ -39,9 +39,9 @@ public class SplashManager : MonoBehaviour
 
         image.color = t_Color;
 
-        while (t_Color.a> 0)
+        while (t_Color.a > 0)
         {
-            t_Color.a += (_isSlow == true) ? fadeSlowSpeed : fadeSpeed;
+            t_Color.a -= (_isSlow == true) ? fadeSlowSpeed : fadeSpeed;
             image.color = t_Color;
             yield return null;
         }
