@@ -21,7 +21,7 @@ public class SplashManager : MonoBehaviour
         Color t_Color = (_isWhite == true) ? colorWhite : colorBlack;
         t_Color.a = 0;
 
-        image.color =t_Color;
+        image.color = t_Color;
 
         while (t_Color.a < 1)
         {
@@ -37,7 +37,7 @@ public class SplashManager : MonoBehaviour
         Color t_Color = (_isWhite == true) ? colorWhite : colorBlack;
         t_Color.a = 1;
 
-        image.color =t_Color;
+        image.color = t_Color;
 
         while (t_Color.a> 0)
         {
