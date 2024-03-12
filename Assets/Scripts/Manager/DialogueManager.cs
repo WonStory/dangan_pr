@@ -28,6 +28,7 @@ public class DialogueManager : MonoBehaviour
     CameraController theCam;
     SplashManager theSplashManager;
     SpriteManager theSpriteManager;
+    CutSceneManager theCutSceneManager;
 
     void Start()
     {
@@ -35,6 +36,7 @@ public class DialogueManager : MonoBehaviour
         theCam = FindObjectOfType<CameraController>();
         theSpriteManager = FindObjectOfType<SpriteManager>();
         theSplashManager = FindObjectOfType<SplashManager>();
+        theCutSceneManager = FindObjectOfType<CutSceneManager>();
     }
 
     void Update() //매프레임 키가 입력되었는지 판별을 해줘야된다.
@@ -93,6 +95,13 @@ public class DialogueManager : MonoBehaviour
             case CameraType.ObjectFront : theCam.CameraTargetting(dialogues[lineCount].tf_target); break;
             case CameraType.Reset : theCam.CameraTargetting(null, 0.05f, true, false); break; //타겟값은 필요없음 null, 조금 리셋은 트루, 이즈피니쉬는 폴스(엔드에서 줘야댐)
         
+            case CameraType.ShowCutScene :  SettingUI(false); CutSceneManager.isFinished =false; StartCoroutine(theCutSceneManager.CutSceneCoroutine(dialogues[lineCount].spriteName[contextCount], true)); //보여주는 것이므로 트루이고 화자의 스프라이트 네임 위치에 컷씬도 넣었으므로 중복이다.
+                                            yield return new WaitUntil(()=>CutSceneManager.isFinished);
+                                            break;
+            case CameraType.HideCutScene :  SettingUI(false); CutSceneManager.isFinished =false; StartCoroutine(theCutSceneManager.CutSceneCoroutine(null, false));//컷씬 안보여주는 것이므로
+                                            yield return new WaitUntil(()=>CutSceneManager.isFinished);
+                                            theCam.CameraTargetting(dialogues[lineCount].tf_target); //다시 타게팅하게끔
+                                            break;
         }
         StartCoroutine(TypeWriter());//라셋하든 타게팅하든 출력해야되므로
     }
@@ -110,11 +119,15 @@ public class DialogueManager : MonoBehaviour
 
     void ChangeSprite()
     {
-        if (dialogues[lineCount].spriteName[contextCount] != "") //공백일 땐 제외하고
+        if (dialogues[lineCount].cameraType == CameraType.ObjectFront) //중복해서 넣었으므로 조건문을 걸어야 구분해서 바꿈. 원래는 빈칸만 아니면 호출이라서
         {
-            StartCoroutine(theSpriteManager.SpriteChangeCoroutine(dialogues[lineCount].tf_target,
-                                                                  dialogues[lineCount].spriteName[contextCount]));
-        }//tf_타켓에 꼭 넣어줘야 그 인물의 스프라이트가 바뀌는 것이므로 none으로 냅두면 안된다.
+            if (dialogues[lineCount].spriteName[contextCount] != "") //공백일 땐 제외하고
+            {
+                StartCoroutine(theSpriteManager.SpriteChangeCoroutine(dialogues[lineCount].tf_target,
+                                                                      dialogues[lineCount].spriteName[contextCount]));
+            }//tf_타켓에 꼭 넣어줘야 그 인물의 스프라이트가 바뀌는 것이므로 none으로 냅두면 안된다.
+    
+        }
     }
 
     void PlaySound()

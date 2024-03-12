@@ -10,6 +10,9 @@ public enum CameraType //열거형 자료라는 뜻 선택지처럼 고를 수 �
     FadeIn,
     FlashOut,
     FlashIn,
+    ShowCutScene,
+    HideCutScene,
+
 }
 
 
