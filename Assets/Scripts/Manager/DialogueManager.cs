@@ -29,6 +29,7 @@ public class DialogueManager : MonoBehaviour
     SplashManager theSplashManager;
     SpriteManager theSpriteManager;
     CutSceneManager theCutSceneManager;
+    SlideManager theSlideManager;
 
     void Start()
     {
@@ -37,6 +38,7 @@ public class DialogueManager : MonoBehaviour
         theSpriteManager = FindObjectOfType<SpriteManager>();
         theSplashManager = FindObjectOfType<SplashManager>();
         theCutSceneManager = FindObjectOfType<CutSceneManager>();
+        theSlideManager = FindObjectOfType<SlideManager>();
     }
 
     void Update() //매프레임 키가 입력되었는지 판별을 해줘야된다.
@@ -102,8 +104,26 @@ public class DialogueManager : MonoBehaviour
                                             yield return new WaitUntil(()=>CutSceneManager.isFinished);
                                             theCam.CameraTargetting(dialogues[lineCount].tf_target); //다시 타게팅하게끔
                                             break;
+
+            case CameraType.AppearSlideCG : SlideManager.isFinished = false; StartCoroutine(theSlideManager.AppearSlide(SplitSlideCGName())); yield return new WaitUntil(()=>SlideManager.isFinished); theCam.CameraTargetting(dialogues[lineCount].tf_target); break;
+            case CameraType.DisappearSlideCG : SlideManager.isFinished = false; StartCoroutine(theSlideManager.DisappearSlide()); yield return new WaitUntil(()=>SlideManager.isFinished); theCam.CameraTargetting(dialogues[lineCount].tf_target); break;
+            case CameraType.ChangeSlideCG : SlideManager.isChanged = false; StartCoroutine(theSlideManager.ChangeSlide(SplitSlideCGName())); yield return new WaitUntil(()=>SlideManager.isChanged); theCam.CameraTargetting(dialogues[lineCount].tf_target); break;
         }
         StartCoroutine(TypeWriter());//라셋하든 타게팅하든 출력해야되므로
+    }
+
+    string SplitSlideCGName()
+    {
+        string t_Text = dialogues[lineCount].spriteName[contextCount];
+        string[] t_Array = t_Text.Split(new char[]{'/'});
+        if (t_Array.Length <= 1)
+        {
+            return t_Array[0];
+        }
+        else
+        {
+            return t_Array[1];
+        }
     }
 
     IEnumerator EndDialogue()
@@ -129,7 +149,7 @@ public class DialogueManager : MonoBehaviour
             if (dialogues[lineCount].spriteName[contextCount] != "") //공백일 땐 제외하고
             {
                 StartCoroutine(theSpriteManager.SpriteChangeCoroutine(dialogues[lineCount].tf_target,
-                                                                      dialogues[lineCount].spriteName[contextCount]));
+                                                                      dialogues[lineCount].spriteName[contextCount].Split(new char[]{'/'})[0]));
             }//tf_타켓에 꼭 넣어줘야 그 인물의 스프라이트가 바뀌는 것이므로 none으로 냅두면 안된다.
     
         }
