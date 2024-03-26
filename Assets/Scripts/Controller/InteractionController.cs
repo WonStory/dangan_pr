@@ -199,9 +199,12 @@ public class InteractionController : MonoBehaviour
         yield return new WaitUntil(()=>QuestionEfeect.isCollide); //정해져있지 않고 부딪힐 때 까지 기다려야하므로 특정조건까지 기다리는 언틸을 쓴다.
         QuestionEfeect.isCollide =false; //다시 기본값으로 충돌하면 다시 트루가 댐
     
-        
+        yield return new WaitForSeconds(0.5f);
 
+        InteractionEvent t_Event = hitInfo.transform.GetComponent<InteractionEvent>(); //자주 반복되면 더러워지므로
 
-        theDM.ShowDialogue(hitInfo.transform.GetComponent<InteractionEvent>().GetDialogue());
+        if (t_Event.GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(t_Event.GetTargets());
+        else if (t_Event.GetAppearType() == AppearType.Disappear) theDM.SetDisppearObjects(t_Event.GetTargets());
+        theDM.ShowDialogue(t_Event.GetDialogue());
     }
 }

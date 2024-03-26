@@ -22,4 +22,14 @@ public class InteractionEvent : MonoBehaviour
     
     
     }
+
+    public AppearType GetAppearType() //인터렉션 이벤트창에서 넘겨줘야되므로 (위에는 다이아로그만 넘겨줌)
+    {
+        return dialogueEvent.appearType;
+    }
+
+    public GameObject[] GetTargets()
+    {
+        return dialogueEvent.go_Targets;
+    }
 }

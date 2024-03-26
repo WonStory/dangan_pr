@@ -18,6 +18,12 @@ public enum CameraType //열거형 자료라는 뜻 선택지처럼 고를 수 �
 
 }
 
+public enum AppearType
+{
+    None,
+    Appear,
+    Disappear,
+}
 
 
 
@@ -52,4 +58,8 @@ public class DialogueEvent
 
     public Vector2 line; //x,y까지의 대사를 추출해서 빼올 수 있게 해준다.
     public Dialogue[] dialogues; //한명이 말하는게 아니기 때문에 배열로 만들어줘야한다.
+
+    [Space] //인스펙터창에서 여백을 주는 것이다.
+    public AppearType appearType;
+    public GameObject[] go_Targets; //여러 캐릭터를 등장시키거나 퇴장시킬 것이므로 배열에 타겟츠
 }

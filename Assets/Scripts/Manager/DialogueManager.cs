@@ -24,6 +24,26 @@ public class DialogueManager : MonoBehaviour
     int lineCount = 0; //대화 카운트
     int contextCount = 0;//대사 카운트, 여러 대사를 할 수 있음으로
 
+    //이벤트 끝나면 등장시키거나 퇴장시키는 오브젝트들.
+
+    GameObject[] go_Objects; //등장(퇴장)시킬 사물 혹은 캐릭터 배열
+    byte appearTypeNumber; //0일 경우 변화x, 1일경우 등장, 2일 경우 퇴장
+    const byte NONE = 0, APPEAR =1, DISAPPEAR = 2; //숫자대신 변수명을 가지고 있는 상수를 이용할 것이다.
+
+    public void SetAppearObjects(GameObject[] p_Targets)
+    {
+        go_Objects = p_Targets;
+        appearTypeNumber = APPEAR;
+    }
+
+    public void SetDisppearObjects(GameObject[] p_Targets)
+    {
+        go_Objects = p_Targets;
+        appearTypeNumber = DISAPPEAR;
+    }
+
+
+
     InteractionController theIC;
     CameraController theCam;
     SplashManager theSplashManager;
@@ -133,6 +153,11 @@ public class DialogueManager : MonoBehaviour
             CutSceneManager.isFinished =false; StartCoroutine(theCutSceneManager.CutSceneCoroutine(null, false));//컷씬 안보여주는 것이므로
             yield return new WaitUntil(()=>CutSceneManager.isFinished);
         }
+
+        AppearOrDisappearObjects();
+
+        yield return new WaitUntil(()=>Spin_Character.isFinished); //완전히 사라지고 나서 뜨도록
+
         isDialogue =false;
         contextCount = 0;
         lineCount = 0;
@@ -140,6 +165,30 @@ public class DialogueManager : MonoBehaviour
         isNext = false;
         theCam.CameraTargetting(null, 0.05f, true, true);
         SettingUI(false);
+    }
+
+    void AppearOrDisappearObjects()
+    {
+        if (go_Objects != null)
+        {
+            Spin_Character.isFinished = false;
+            for (int i = 0; i < go_Objects.Length; i++)
+            {
+                if (appearTypeNumber == APPEAR)
+                {
+                    go_Objects[i].SetActive(true);
+                    StartCoroutine(go_Objects[i].GetComponent<Spin_Character>().SetAppearOrDisappear(true));
+                
+                }
+                else if (appearTypeNumber == DISAPPEAR) 
+                {
+                    //go_Objects[i].SetActive(false); 비활성화 자체는 아래 코루틴에도 들어가 있으므로 제거해도 상관없음
+                    StartCoroutine(go_Objects[i].GetComponent<Spin_Character>().SetAppearOrDisappear(false));
+                }
+            }
+        }
+        go_Objects = null;
+        appearTypeNumber = NONE;
     }
 
     void ChangeSprite()
