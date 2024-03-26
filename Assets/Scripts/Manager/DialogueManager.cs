@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+
+    public static bool isWaiting = false; //너무 갑자기 시작하지 않도록 잠시 기다리도록한다.
+
+
     [SerializeField] GameObject go_DialogueBar;
     [SerializeField] GameObject go_DialogueNameBar;
 
@@ -100,9 +104,18 @@ public class DialogueManager : MonoBehaviour
         txt_Name.text = "";
         theIC.SettingUI(false); //크로스헤어와 화살표 숨기기
         dialogues = p_dialogues;
+        
+        StartCoroutine(StartDialogue());
+    }
+
+    IEnumerator StartDialogue()
+    {
+        if (isWaiting) yield return new WaitForSeconds(0.5f);
+        isWaiting = false; //한번호출 됐으니까 false로 바꿔준다.
+    
         theCam.CamOriginSetting(); //어디로 돌아갈지 저장해둠
         //theCam.CameraTargetting(dialogues[lineCount].tf_target);시작할 때도 설정을 해준다.
-        StartCoroutine(CameraTargettingType());
+        StartCoroutine(CameraTargettingType()); //쇼다이어로그에서 여기로 옮겨준다.
     }
 
     IEnumerator CameraTargettingType()
@@ -148,6 +161,7 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator EndDialogue()
     {
+        SettingUI(false);
         if (theCutSceneManager.CheckCutScene())
         {
             CutSceneManager.isFinished =false; StartCoroutine(theCutSceneManager.CutSceneCoroutine(null, false));//컷씬 안보여주는 것이므로
@@ -156,7 +170,7 @@ public class DialogueManager : MonoBehaviour
 
         AppearOrDisappearObjects();
 
-        yield return new WaitUntil(()=>Spin_Character.isFinished); //완전히 사라지고 나서 뜨도록
+        yield return new WaitUntil(()=>Spin_Character.isFinished); //완전히 사라지고 나서 뜨도록, 하지만 이게 트루로 바뀔 때까지 무한 대기여서 아래 코드가 동작을 안한다. (스핀캐릭터, 스플래쉬매니저, 슬라이드 매니저를 바꿔준다)
 
         isDialogue =false;
         contextCount = 0;
@@ -164,7 +178,6 @@ public class DialogueManager : MonoBehaviour
         dialogues =null; //대화를 간직하고 있을 필요가 없음
         isNext = false;
         theCam.CameraTargetting(null, 0.05f, true, true);
-        SettingUI(false);
     }
 
     void AppearOrDisappearObjects()

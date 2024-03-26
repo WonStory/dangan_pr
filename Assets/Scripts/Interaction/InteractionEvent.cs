@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InteractionEvent : MonoBehaviour
 {
+    [SerializeField] bool isAutoEvent = false; //이녀석이 트루면 자동으로 실행되는 이벤트라고 알아먹도록한다.
+
+
     [SerializeField] DialogueEvent dialogueEvent; //여기서 꺼내오게끔 트리거 역할을 해야된다.
 
     public Dialogue[] GetDialogue()
@@ -32,4 +36,27 @@ public class InteractionEvent : MonoBehaviour
     {
         return dialogueEvent.go_Targets;
     }
+
+    void Update()
+    {
+        if (isAutoEvent && Datamanager.isFinish) //데이터 파싱이 다 끝나면 호출할 수 있도록 데이터매니저의 isfinished도 신경써준다. (오류방지용)
+        {
+            DialogueManager theDM = FindObjectOfType<DialogueManager>(); //대화매니저에 넘겨준다
+            DialogueManager.isWaiting = true;
+            if (GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(GetTargets());
+            else if (GetAppearType() == AppearType.Disappear) theDM.SetDisppearObjects(GetTargets()); //여기자체에 변수가 있기도하고 이러면 필요할 때마다 기능을 수행할 수 있다.
+            theDM.ShowDialogue(GetDialogue());
+        
+            gameObject.SetActive(false); //냅두면 계속반복할 것이므로 아예 삭제해버린다.
+        }
+
+    
+    }
+
+
+
+
+
+
+
 }

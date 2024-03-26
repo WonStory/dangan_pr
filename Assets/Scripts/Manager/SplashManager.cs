@@ -14,7 +14,7 @@ public class SplashManager : MonoBehaviour
     [SerializeField] float fadeSpeed;
     [SerializeField] float fadeSlowSpeed; //느리게 시킬 때랑 빠르게 시킬때를 구분해서
 
-    public static bool isFinished = false;
+    public static bool isFinished = true;
 
     public IEnumerator Splash() //순간의 번쩍임을 이 함수로 표현
     {

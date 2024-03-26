@@ -8,7 +8,7 @@ public class Spin_Character : MonoBehaviour
     [SerializeField] Transform tf_Target;
 
     bool spin = false; //트루일 경우 계속 돌도록
-    public static bool isFinished = false;
+    public static bool isFinished = true;
 
 
 

@@ -41,7 +41,20 @@ public class InteractionController : MonoBehaviour
     {
         go_Crosshair.SetActive(p_flag);
         go_Cursor.SetActive(p_flag);
-        go_TargetNameBar.SetActive(p_flag);
+        
+        if (!p_flag) //강제로 사라지게 만든다. 마우스를 올려놓고 하면 자국이 안사라진채로 스타트한다.
+        {
+            StopCoroutine("Interaction"); 
+            Color color = img_Interaction.color;
+            color.a =0;
+            img_Interaction.color = color;
+            go_TargetNameBar.SetActive(false); //타겟 네임바를 무조건 등장시키면 안되고 사라질 땐 알아서 사라지도록 한다.
+        }
+        else
+        {
+            go_NomalCrosshair.SetActive(true);
+            go_interactiveCrosshair.SetActive(false);
+        }
 
         isInteract = !p_flag; //반대로 설정해두면 된다.
     }

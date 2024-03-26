@@ -8,7 +8,7 @@ public class SlideManager : MonoBehaviour
     [SerializeField] Image img_SlideCG;
     [SerializeField] Animation anim; //애니메이션 컴포넌트를 넣었으므로 그걸 컨트롤할 변수도 넣어준다.
 
-    public static bool isFinished = false; //전부 등장하고 나서 텍스트를 출력할 수 있도록 해준다.
+    public static bool isFinished = true; //전부 등장하고 나서 텍스트를 출력할 수 있도록 해준다.
     public static bool isChanged = false; //체인지슬라이드 함수가 전체적으로 끝났는지 알려주는 불
 
     public IEnumerator AppearSlide(string p_SlideName)

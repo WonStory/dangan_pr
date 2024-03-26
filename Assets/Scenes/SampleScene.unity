@@ -6555,6 +6555,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 319589022}
   m_CullTransparentMesh: 1
+--- !u!1 &319849897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 319849898}
+  m_Layer: 0
+  m_Name: AutoEvent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &319849898
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319849897}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.1483266, y: 1.3721051, z: 0.46060842}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1602696960}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &369228355
 GameObject:
   m_ObjectHideFlags: 0
@@ -12226,6 +12258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e03d91f1f7c454da257c44247e2726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAutoEvent: 0
   dialogueEvent:
     name: "\uC790\uAE30\uC18C\uAC1C \uBD09\uB780"
     line: {x: 1, y: 4}
@@ -14201,6 +14234,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575526325}
   m_CullTransparentMesh: 1
+--- !u!1 &1602696959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1602696960}
+  - component: {fileID: 1602696961}
+  m_Layer: 0
+  m_Name: Event01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1602696960
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602696959}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 319849898}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1602696961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602696959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30e03d91f1f7c454da257c44247e2726, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAutoEvent: 1
+  dialogueEvent:
+    name: "\uC790\uAE30\uC18C\uAC1C"
+    line: {x: 1, y: 4}
+    dialogues:
+    - cameraType: 0
+      tf_target: {fileID: 688182975}
+      name: 
+      contexts: []
+      spriteName: []
+      VocieName: []
+    - cameraType: 0
+      tf_target: {fileID: 0}
+      name: 
+      contexts: []
+      spriteName: []
+      VocieName: []
+    - cameraType: 0
+      tf_target: {fileID: 0}
+      name: 
+      contexts: []
+      spriteName: []
+      VocieName: []
+    - cameraType: 1
+      tf_target: {fileID: 0}
+      name: 
+      contexts: []
+      spriteName: []
+      VocieName: []
+    appearType: 0
+    go_Targets: []
 --- !u!1 &1603185751
 GameObject:
   m_ObjectHideFlags: 0
@@ -15579,7 +15687,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: practice
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5071634ce92f9894a9e8a94ba61a6f44, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -15663,11 +15771,12 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 1816287109}
   - {fileID: 653360777}
-  - {fileID: 253427364}
-  - {fileID: 1617794292}
   - {fileID: 688182975}
   - {fileID: 1332368173}
   - {fileID: 1818671769}
+  - {fileID: 319849898}
+  - {fileID: 253427364}
+  - {fileID: 1617794292}
   - {fileID: 216114410}
   - {fileID: 543640835}
   - {fileID: 4119614}
