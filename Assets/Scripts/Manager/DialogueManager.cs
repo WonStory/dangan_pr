@@ -28,6 +28,17 @@ public class DialogueManager : MonoBehaviour
     int lineCount = 0; //대화 카운트
     int contextCount = 0;//대사 카운트, 여러 대사를 할 수 있음으로
 
+    // 다음 이벤트를 위한 세팅
+    GameObject go_NextEvent;
+
+    public void SetNextEvent(GameObject p_NextEvent)
+    {
+        go_NextEvent = p_NextEvent;
+    }
+
+
+
+
     //이벤트 끝나면 등장시키거나 퇴장시키는 오브젝트들.
 
     GameObject[] go_Objects; //등장(퇴장)시킬 사물 혹은 캐릭터 배열
@@ -178,6 +189,19 @@ public class DialogueManager : MonoBehaviour
         dialogues =null; //대화를 간직하고 있을 필요가 없음
         isNext = false;
         theCam.CameraTargetting(null, 0.05f, true, true);
+
+        yield return new WaitUntil(()=>!InteractionController.isInteract); //카메라 세팅이 완전히 리셋될 때까지 기다리도록 한다.
+
+        if (go_NextEvent != null)
+        {
+            go_NextEvent.SetActive(true); //드래그해서 넣어논 이벤트를 활성화한다.
+            go_NextEvent = null; //실행하고 널값으로 바꾼다
+        }
+        else
+        {
+            theIC.SettingUI(true);
+        }
+
     }
 
     void AppearOrDisappearObjects()

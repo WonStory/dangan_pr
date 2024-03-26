@@ -62,4 +62,7 @@ public class DialogueEvent
     [Space] //인스펙터창에서 여백을 주는 것이다.
     public AppearType appearType;
     public GameObject[] go_Targets; //여러 캐릭터를 등장시키거나 퇴장시킬 것이므로 배열에 타겟츠
+
+    [Space]
+    public GameObject go_NextEvent; //이녀석이 null이면 대화 끝내고 널이 아니면 다음 이벤트를 실행시킨다.
 }

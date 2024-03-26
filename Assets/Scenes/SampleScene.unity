@@ -12287,10 +12287,9 @@ MonoBehaviour:
       contexts: []
       spriteName: []
       VocieName: []
-    appearType: 2
-    go_Targets:
-    - {fileID: 1332368169}
-    - {fileID: 1818671765}
+    appearType: 0
+    go_Targets: []
+    go_NextEvent: {fileID: 1602696959}
 --- !u!114 &688182979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14250,7 +14249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1602696960
 Transform:
   m_ObjectHideFlags: 0
@@ -14309,6 +14308,7 @@ MonoBehaviour:
       VocieName: []
     appearType: 0
     go_Targets: []
+    go_NextEvent: {fileID: 0}
 --- !u!1 &1603185751
 GameObject:
   m_ObjectHideFlags: 0

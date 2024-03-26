@@ -37,6 +37,12 @@ public class InteractionEvent : MonoBehaviour
         return dialogueEvent.go_Targets;
     }
 
+    public GameObject GetNextEvent()
+    {
+        return dialogueEvent.go_NextEvent;
+    }
+
+
     void Update()
     {
         if (isAutoEvent && Datamanager.isFinish) //데이터 파싱이 다 끝나면 호출할 수 있도록 데이터매니저의 isfinished도 신경써준다. (오류방지용)
@@ -45,6 +51,7 @@ public class InteractionEvent : MonoBehaviour
             DialogueManager.isWaiting = true;
             if (GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(GetTargets());
             else if (GetAppearType() == AppearType.Disappear) theDM.SetDisppearObjects(GetTargets()); //여기자체에 변수가 있기도하고 이러면 필요할 때마다 기능을 수행할 수 있다.
+            theDM.SetNextEvent(GetNextEvent()); //dialogue매니저에 세팅이 된다.
             theDM.ShowDialogue(GetDialogue());
         
             gameObject.SetActive(false); //냅두면 계속반복할 것이므로 아예 삭제해버린다.

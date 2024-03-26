@@ -77,7 +77,8 @@ public class CameraController : MonoBehaviour
         if (p_isFinish)
         {//모든 대화가 끝났으면 리셋
             thePlayer.Reset();
-            theIC.SettingUI(true);
+            //theIC.SettingUI(true);무조건 띄우면 안되므로 다른코드로 대체한다
+            InteractionController.isInteract = false; //이러면 무한대기를 만족하게되므로 다음 이벤트로 진행된다. 그리고 원래 띄우던 셋팅UI는 다이어로그 매니저 else로 보낸다.
         }
     }
 }

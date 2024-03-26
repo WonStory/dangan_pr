@@ -216,6 +216,7 @@ public class InteractionController : MonoBehaviour
 
         InteractionEvent t_Event = hitInfo.transform.GetComponent<InteractionEvent>(); //자주 반복되면 더러워지므로
 
+        theDM.SetNextEvent(t_Event.GetNextEvent());
         if (t_Event.GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(t_Event.GetTargets());
         else if (t_Event.GetAppearType() == AppearType.Disappear) theDM.SetDisppearObjects(t_Event.GetTargets());
         theDM.ShowDialogue(t_Event.GetDialogue());
