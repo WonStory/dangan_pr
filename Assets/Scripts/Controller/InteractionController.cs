@@ -216,9 +216,31 @@ public class InteractionController : MonoBehaviour
 
         InteractionEvent t_Event = hitInfo.transform.GetComponent<InteractionEvent>(); //자주 반복되면 더러워지므로
 
-        theDM.SetNextEvent(t_Event.GetNextEvent());
-        if (t_Event.GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(t_Event.GetTargets());
-        else if (t_Event.GetAppearType() == AppearType.Disappear) theDM.SetDisppearObjects(t_Event.GetTargets());
-        theDM.ShowDialogue(t_Event.GetDialogue());
+
+
+        if (hitInfo.transform.GetComponent<InteractionType>().isObject)
+        {
+            DialogueCall(t_Event);
+        }
+        else//캐릭터나 사물이 아닌 도어다 하면 else에 걸리도록
+        {
+            TransferCall();
+        }
+        
     }
+
+    void TransferCall()
+    {
+        string t_SceneName = hitInfo.transform.GetComponent<InteractionDoor>().GetSceneName();
+        Debug.Log(t_SceneName);
+    }
+
+    void DialogueCall(InteractionEvent p_Event)
+    {
+        theDM.SetNextEvent(p_Event.GetNextEvent());
+        if (p_Event.GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(p_Event.GetTargets());
+        else if (p_Event.GetAppearType() == AppearType.Disappear) theDM.SetDisppearObjects(p_Event.GetTargets());
+        theDM.ShowDialogue(p_Event.GetDialogue());
+    }
+
 }
