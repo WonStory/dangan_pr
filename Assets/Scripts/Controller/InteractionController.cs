@@ -238,7 +238,8 @@ public class InteractionController : MonoBehaviour
     void TransferCall()
     {
         string t_SceneName = hitInfo.transform.GetComponent<InteractionDoor>().GetSceneName();
-        Debug.Log(t_SceneName);
+        string t_LocationName = hitInfo.transform.GetComponent<InteractionDoor>().GetLocationName();
+        StartCoroutine(FindObjectOfType<TransferManager>().Transfer(t_SceneName, t_LocationName));
     }
 
     void DialogueCall(InteractionEvent p_Event)

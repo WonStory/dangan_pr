@@ -4,6 +4,22 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
+    void Awake() //시작과 동시에 , 싱글톤
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
     //UI크로스헤어를 움직여줘야하는데 그래서 위치를 기억해둬야댐.
     [SerializeField] Transform tf_Crosshair; //serializedfield를 쓰면 원래 private한 걸 inspector에도 띄워줘서 편하게 할 수 있다.(퍼블릭 효과를 줄 수 있다. 보호는 유지되면서)
 
