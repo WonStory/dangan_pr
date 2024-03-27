@@ -21,6 +21,7 @@ public class InteractionController : MonoBehaviour
 
     bool isContact = false; //Contact함수의 길이가 길어지면 자꾸 검사하는게 쓸데없어짐. 따로 변수를 만들어서 관리
     public static bool isInteract = false; //인터렉트하고 있는지 불값으로 나타낸다.
+    bool isTest = true;
 
     [SerializeField] ParticleSystem ps_QuestionEffect;
 
@@ -39,6 +40,8 @@ public class InteractionController : MonoBehaviour
 */ // 아래로 병합한 다음 지워준다.
     public void SettingUI(bool p_flag)
     {
+        isTest = p_flag;
+        isContact = !p_flag;
         go_Crosshair.SetActive(p_flag);
         go_Cursor.SetActive(p_flag);
         
@@ -80,7 +83,10 @@ public class InteractionController : MonoBehaviour
 
         if (Physics.Raycast(cam.ScreenPointToRay(t_MousePos), out hitInfo, 100))//마우스 좌표를 환산해서 정면으로 치환시켜주는 투래이함수
         {
-            Contact();
+            if (isTest)
+            {
+                Contact();
+            }
         }
         else
         {
