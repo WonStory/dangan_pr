@@ -16778,7 +16778,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: 2Floor
-  locationName: 1FTo2F
+  locationName: 2Floor_L
 --- !u!65 &1346545469
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17258,7 +17258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: 2Floor
-  locationName: 1FTo2F
+  locationName: 2Floor_R
 --- !u!65 &1499536110
 BoxCollider:
   m_ObjectHideFlags: 0
