@@ -28,7 +28,6 @@ public enum AppearType
 
 
 [System.Serializable] //커스텀 클래스는 inspector창에서 수정이 안되기에 직접 설정(앞의 함수)을 해줘야된다.
-
 public class Dialogue //모노비헤이비어를 상속 안받아서 스타트 업뎃 다 쓸모없음
 {
     [Header("카메라가 타게팅 하는 대상")]
@@ -50,11 +49,22 @@ public class Dialogue //모노비헤이비어를 상속 안받아서 스타트 �
     public string[] VocieName;
 }
 
-[System.Serializable]
 
+[System.Serializable]
+public class EventTiming
+{
+    public int eventNum; //이벤트의 번호
+    public int[] eventConditions; //특정 조건을 만족하면 등장시키도록(배열내의 이벤트들)
+    public bool conditionFlag; //특정 이벤트를 안봤을 경우 등장시키도록
+    public int eventEndNum; //특정이벤트를 봤다면 무조건 퇴장시켜야되는 경우가 있다.
+}
+
+
+[System.Serializable]
 public class DialogueEvent
 {
     public string name; //어느 이벤트인지 우리가 알아차리기 편하게 만드는 변수
+    public EventTiming eventTiming;
 
     public Vector2 line; //x,y까지의 대사를 추출해서 빼올 수 있게 해준다.
     public Dialogue[] dialogues; //한명이 말하는게 아니기 때문에 배열로 만들어줘야한다.

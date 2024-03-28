@@ -107,7 +107,7 @@ public class InteractionController : MonoBehaviour
         }
         else
         {
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, 10))//카메라 위치에서 카메라 정면으로 레이져를 쏘도록
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, 5))//카메라 위치에서 카메라 정면으로 레이져를 쏘도록
             {
                 if (isTest)
                 {

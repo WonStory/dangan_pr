@@ -1549,6 +1549,11 @@ MonoBehaviour:
   isAutoEvent: 1
   dialogueEvent:
     name: "\uC790\uAE30\uC18C\uAC1C"
+    eventTiming:
+      eventNum: 0
+      eventConditions: 
+      conditionFlag: 0
+      eventEndNum: 0
     line: {x: 1, y: 4}
     dialogues:
     - cameraType: 0
@@ -3587,6 +3592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CSV_FileName: prologue
+  eventFlags: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &549503397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9024,11 +9030,11 @@ Transform:
   m_GameObject: {fileID: 675259380}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 12.898892, y: 5.6827044, z: 2.1147058}
+  m_LocalPosition: {x: 0, y: 0.9200001, z: 10}
   m_LocalScale: {x: 0.5, y: 0.5000001, z: 0.5000001}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2033874102}
+  m_Father: {fileID: 1760905566}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &696479204
 GameObject:
@@ -14392,11 +14398,11 @@ Transform:
   m_GameObject: {fileID: 766117055}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 12.898892, y: 4.7627044, z: 7.114706}
-  m_LocalScale: {x: 0.05, y: 0.050000023, z: 0.050000023}
+  m_LocalPosition: {x: 0, y: 0, z: 15}
+  m_LocalScale: {x: 0.05, y: 0.050000027, z: 0.050000027}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2033874102}
+  m_Father: {fileID: 1760905566}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &836362067
 GameObject:
@@ -16286,7 +16292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1257996929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16299,7 +16305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 820ea4bd69d34ea43ba8c0074763833f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tf_Target: {fileID: 1760905566}
 --- !u!114 &1257996930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18147,6 +18152,8 @@ Transform:
   m_Children:
   - {fileID: 910292356}
   - {fileID: 1361830039}
+  - {fileID: 766117059}
+  - {fileID: 675259384}
   - {fileID: 2033874102}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19106,7 +19113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 820ea4bd69d34ea43ba8c0074763833f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tf_Target: {fileID: 1760905566}
 --- !u!114 &1950139787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19122,7 +19128,12 @@ MonoBehaviour:
   isAutoEvent: 0
   dialogueEvent:
     name: "\uC790\uAE30\uC18C\uAC1C \uBD09\uB780"
-    line: {x: 1, y: 4}
+    eventTiming:
+      eventNum: 1
+      eventConditions: 00000000
+      conditionFlag: 0
+      eventEndNum: 1
+    line: {x: 1, y: 1}
     dialogues:
     - cameraType: 0
       tf_target: {fileID: 1950139785}
@@ -19130,27 +19141,10 @@ MonoBehaviour:
       contexts: []
       spriteName: []
       VocieName: []
-    - cameraType: 0
-      tf_target: {fileID: 0}
-      name: 
-      contexts: []
-      spriteName: []
-      VocieName: []
-    - cameraType: 0
-      tf_target: {fileID: 1950139785}
-      name: 
-      contexts: []
-      spriteName: []
-      VocieName: []
-    - cameraType: 1
-      tf_target: {fileID: 0}
-      name: 
-      contexts: []
-      spriteName: []
-      VocieName: []
-    appearType: 0
-    go_Targets: []
-    go_NextEvent: {fileID: 386548226}
+    appearType: 2
+    go_Targets:
+    - {fileID: 1950139784}
+    go_NextEvent: {fileID: 0}
 --- !u!114 &1950139788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19578,9 +19572,7 @@ Transform:
   m_LocalPosition: {x: -12.898892, y: -4.7627044, z: 7.885294}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 766117059}
-  - {fileID: 675259384}
+  m_Children: []
   m_Father: {fileID: 1760905566}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2037434737
@@ -19835,7 +19827,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2084027376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19848,7 +19840,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 820ea4bd69d34ea43ba8c0074763833f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tf_Target: {fileID: 1760905566}
 --- !u!114 &2084027377
 MonoBehaviour:
   m_ObjectHideFlags: 0

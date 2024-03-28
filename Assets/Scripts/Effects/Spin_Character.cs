@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Spin_Character : MonoBehaviour
 {
-    [SerializeField] Transform tf_Target;
+    Transform tf_Target; //다른 씬에서는 플레이어가 없어서 직접 넣어줄 수가 없음
 
     bool spin = false; //트루일 경우 계속 돌도록
     public static bool isFinished = true;
@@ -15,7 +15,7 @@ public class Spin_Character : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        tf_Target = PlayerController.instance.transform; //직접 일일이 안 넣어주고 고정이 가능하다
     }
 
     // Update is called once per frame
@@ -25,7 +25,7 @@ public class Spin_Character : MonoBehaviour
         {
             if (!spin)
             {
-                Quaternion t_Rotation = Quaternion.LookRotation(tf_Target.position); //대상을 바라보도록
+                Quaternion t_Rotation = Quaternion.LookRotation(tf_Target.position - transform.position); //대상을 바라보도록, !!다만 자기 위치를 뺴줘야된다.
                 Vector3 t_Euler = new Vector3(0, t_Rotation.eulerAngles.y, 0); //y축으로 회전해야 자연스럽다. x,z축은 고정
                 transform.eulerAngles = t_Euler;
             }

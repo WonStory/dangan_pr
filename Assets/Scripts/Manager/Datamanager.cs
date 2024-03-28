@@ -10,6 +10,8 @@ public class Datamanager : MonoBehaviour
 
     Dictionary<int, Dialogue> dialogueDic = new Dictionary<int, Dialogue>(); //이벤트, 대화 라고 생각하면 편하다.
 
+    public bool[] eventFlags = new bool[100]; //다양한 대화이벤트가 있을수록 많아짐 or 초기화시키면서 사용해도된다.
+
     public static bool isFinish = false; //전부 저장이 됐는지 아닌지 판단해주는 bool
 
     void Awake() //스타트보다 먼저 시작된다.
