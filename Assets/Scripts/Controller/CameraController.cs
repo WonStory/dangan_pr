@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public static bool onlyView = true; //방에서 시작하니까 트루로 시작하는데 이걸로 if문을 걸어서 카메라세팅을 조작
 
     Vector3 originPos; //카메라가 있던 위치, 각도
     Quaternion originRot;
@@ -22,7 +23,14 @@ public class CameraController : MonoBehaviour
     public void CamOriginSetting()
     {
         originPos = transform.position;
-        originRot = Quaternion.Euler(0,0,0); //정면을 보도록
+        if (onlyView)
+        {
+            originRot = Quaternion.Euler(0,0,0); //정면을 보도록, 씬전환할 때는 이게 악영향을 준다.(특히 이동 가능한 공간에선 더더욱)
+        }
+        else
+        {
+            originRot = transform.rotation; //우리가 위치 세팅을 해놨기 떄문에(거의 초기화 수준) 지금 가지고 있는 로테이션을 주면된다.
+        }
     }
 
     public void CameraTargetting(Transform p_Target, float p_CamSpeed = 0.1f, bool p_isReset = false, bool p_isFinish = false)
