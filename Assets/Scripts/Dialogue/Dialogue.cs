@@ -66,10 +66,15 @@ public class DialogueEvent
     public string name; //어느 이벤트인지 우리가 알아차리기 편하게 만드는 변수
     public EventTiming eventTiming;
 
+    [Space][Space][Space]
     public Vector2 line; //x,y까지의 대사를 추출해서 빼올 수 있게 해준다.
     public Dialogue[] dialogues; //한명이 말하는게 아니기 때문에 배열로 만들어줘야한다.
 
-    [Space] //인스펙터창에서 여백을 주는 것이다.
+    [Space]
+    public Vector2 lineB;
+    public Dialogue[]  dialoguesB; //이게 2번째 상호작용 대사가 된다.
+
+    [Space][Space][Space] //인스펙터창에서 여백을 주는 것이다.
     public AppearType appearType;
     public GameObject[] go_Targets; //여러 캐릭터를 등장시키거나 퇴장시킬 것이므로 배열에 타겟츠
 

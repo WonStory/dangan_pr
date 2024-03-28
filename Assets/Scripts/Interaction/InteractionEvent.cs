@@ -44,20 +44,32 @@ public class InteractionEvent : MonoBehaviour
 
     public Dialogue[] GetDialogue()
     {
-        Datamanager.instance.eventFlags[dialogueEvent.eventTiming.eventNum] = true;
-        DialogueEvent t_DialogueEvent = new DialogueEvent(); //임시변수를 할당해서 치환해준다. null값으로 복붙하지 않게
-        t_DialogueEvent.dialogues = Datamanager.instance.GetDialogue((int)dialogueEvent.line.x, (int)dialogueEvent.line.y); //플롯값을 인트로 강제 형변해줘야한다. (벡터값이므로)
+        //상호작용 전 대화
+        if (!Datamanager.instance.eventFlags[dialogueEvent.eventTiming.eventNum])
+        {
+            Datamanager.instance.eventFlags[dialogueEvent.eventTiming.eventNum] = true; //안봤으면 트루로 바꿔준다
+            dialogueEvent.dialogues = SettingDialogue(dialogueEvent.dialogues, (int)dialogueEvent.line.x, (int)dialogueEvent.line.y);
+            return dialogueEvent.dialogues;
+        }
+        //상호작용 후 대화
+        else //이미 본거다
+        {
+            dialogueEvent.dialoguesB = SettingDialogue(dialogueEvent.dialoguesB, (int)dialogueEvent.lineB.x, (int)dialogueEvent.lineB.y);
+            return dialogueEvent.dialoguesB;
+        }
+
+    }
+
+    Dialogue[] SettingDialogue(Dialogue[] p_Dialogue, int p_lineX, int p_lineY)
+    {
+        Dialogue[] t_Dialogues = Datamanager.instance.GetDialogue(p_lineX, p_lineY); //플롯값을 인트로 강제 형변해줘야한다. (벡터값이므로)
         for (int i = 0; i < dialogueEvent.dialogues.Length; i++)
         {
-            t_DialogueEvent.dialogues[i].tf_target = dialogueEvent.dialogues[i].tf_target;
-            t_DialogueEvent.dialogues[i].cameraType = dialogueEvent.dialogues[i].cameraType;
+            t_Dialogues[i].tf_target = p_Dialogue[i].tf_target;
+            t_Dialogues[i].cameraType = p_Dialogue[i].cameraType;
         }
         
-        dialogueEvent.dialogues = t_DialogueEvent.dialogues;
-        
-        return dialogueEvent.dialogues;
-    
-    
+        return t_Dialogues;
     }
 
     public AppearType GetAppearType() //인터렉션 이벤트창에서 넘겨줘야되므로 (위에는 다이아로그만 넘겨줌)
@@ -75,6 +87,10 @@ public class InteractionEvent : MonoBehaviour
         return dialogueEvent.go_NextEvent;
     }
 
+    public int GetEventNumber()
+    {
+        return dialogueEvent.eventTiming.eventNum;
+    }
 
     void Update()
     {

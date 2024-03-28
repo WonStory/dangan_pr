@@ -275,9 +275,13 @@ public class InteractionController : MonoBehaviour
 
     void DialogueCall(InteractionEvent p_Event)
     {
-        theDM.SetNextEvent(p_Event.GetNextEvent());
-        if (p_Event.GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(p_Event.GetTargets());
-        else if (p_Event.GetAppearType() == AppearType.Disappear) theDM.SetDisppearObjects(p_Event.GetTargets());
+        if (!Datamanager.instance.eventFlags[p_Event.GetEventNumber()]) //아직 안본거일 때만 실행
+        {
+            theDM.SetNextEvent(p_Event.GetNextEvent());
+            if (p_Event.GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(p_Event.GetTargets());
+            else if (p_Event.GetAppearType() == AppearType.Disappear) theDM.SetDisppearObjects(p_Event.GetTargets());
+        }
+
         theDM.ShowDialogue(p_Event.GetDialogue());
     }
 
