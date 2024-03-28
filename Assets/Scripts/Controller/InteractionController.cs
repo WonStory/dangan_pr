@@ -15,6 +15,7 @@ public class InteractionController : MonoBehaviour
     [SerializeField] GameObject go_interactiveCrosshair;
     [SerializeField] GameObject go_Crosshair; //크로스헤어 부모객체
     [SerializeField] GameObject go_Cursor; //커서, 대화할때 비활성화 하도록
+    [SerializeField] GameObject go_FieldCursor;//일반 커서랑 필드커서를 구분
 
     [SerializeField] GameObject go_TargetNameBar;
     [SerializeField] TextMeshProUGUI txt_TargetName;
@@ -43,7 +44,6 @@ public class InteractionController : MonoBehaviour
         isTest = p_flag;
         isContact = !p_flag;
         go_Crosshair.SetActive(p_flag);
-        go_Cursor.SetActive(p_flag);
         
         if (!p_flag) //강제로 사라지게 만든다. 마우스를 올려놓고 하면 자국이 안사라진채로 스타트한다.
         {
@@ -52,9 +52,19 @@ public class InteractionController : MonoBehaviour
             color.a =0;
             img_Interaction.color = color;
             go_TargetNameBar.SetActive(false); //타겟 네임바를 무조건 등장시키면 안되고 사라질 땐 알아서 사라지도록 한다.
+            go_Cursor.SetActive(p_flag);
+            go_FieldCursor.SetActive(p_flag);
         }
         else
         {
+            if (CameraController.onlyView)
+            {
+                go_Cursor.SetActive(true);
+            }
+            else
+            {
+                go_FieldCursor.SetActive(true);
+            }
             go_NomalCrosshair.SetActive(true);
             go_interactiveCrosshair.SetActive(false);
         }
@@ -79,19 +89,34 @@ public class InteractionController : MonoBehaviour
 
     void CheckObject()
     {
-        Vector3 t_MousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y,0);
-
-        if (Physics.Raycast(cam.ScreenPointToRay(t_MousePos), out hitInfo, 100))//마우스 좌표를 환산해서 정면으로 치환시켜주는 투래이함수
+        if (CameraController.onlyView)
         {
-            if (isTest)
+            Vector3 t_MousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y,0);
+
+            if (Physics.Raycast(cam.ScreenPointToRay(t_MousePos), out hitInfo, 100))//마우스 좌표를 환산해서 정면으로 치환시켜주는 투래이함수
             {
-                Contact();
+                if (isTest)
+                {
+                    Contact();
+                }
+            }
+            else
+            {
+                NotContact();
             }
         }
         else
         {
-            NotContact();
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, 10))//카메라 위치에서 카메라 정면으로 레이져를 쏘도록
+            {
+                if (isTest)
+                {
+                    Contact();
+                }
+            }
         }
+
+
     
     }
 
@@ -106,10 +131,13 @@ public class InteractionController : MonoBehaviour
                 isContact = true;
                 go_interactiveCrosshair.SetActive(true);
                 go_NomalCrosshair.SetActive(false);
-                StopCoroutine("Interaction");
-                StopCoroutine("InteractionEffect");
-                StartCoroutine("Interaction",true); //빠르게 반복하면 코루틴이 반복실행된다. 자연스럽게 생기고 낫컨택트일땐 자연스럽게 사라지고
-                StartCoroutine("InteractionEffect");
+                if (!CameraController.onlyView)
+                {
+                    StopCoroutine("Interaction");
+                    StopCoroutine("InteractionEffect");
+                    StartCoroutine("Interaction",true); //빠르게 반복하면 코루틴이 반복실행된다. 자연스럽게 생기고 낫컨택트일땐 자연스럽게 사라지고
+                    StartCoroutine("InteractionEffect");
+                }
             }
             
         }
@@ -127,8 +155,11 @@ public class InteractionController : MonoBehaviour
             isContact = false;
             go_interactiveCrosshair.SetActive(false);
             go_NomalCrosshair.SetActive(true);
-            StopCoroutine("Interaction");
-            StartCoroutine("Interaction",false);
+            if (!CameraController.onlyView)
+            {
+                StopCoroutine("Interaction");
+                StartCoroutine("Interaction",false);
+            }
         }
         
     }

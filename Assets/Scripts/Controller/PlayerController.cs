@@ -19,6 +19,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    [SerializeField] float walkSpped;
+    [SerializeField] float runSpeed;
+    float applySpeed;
+
+    [SerializeField] float fieldSensitivity; //고개의 움직임(민감도)를 결정하기 위해
+    [SerializeField] float fieldLookLimitX;
 
     //UI크로스헤어를 움직여줘야하는데 그래서 위치를 기억해둬야댐.
     [SerializeField] Transform tf_Crosshair; //serializedfield를 쓰면 원래 private한 걸 inspector에도 띄워줘서 편하게 할 수 있다.(퍼블릭 효과를 줄 수 있다. 보호는 유지되면서)
@@ -27,7 +33,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Vector2 camBoundary; //캠의 가두기 영역
     [SerializeField] float sightMoveSpeed;//고개를 돌릴 때 같이 조금 움직여주는 정도
     [SerializeField] float sightSensivitity;//고개의 움직임 속도.
-    [SerializeField] float lookLimitX;
+    [SerializeField] float lookLimitX; //필드용이 아님
     [SerializeField] float lookLimitY;
     float currentAngleX;
     float currentAngleY;
@@ -42,9 +48,9 @@ public class PlayerController : MonoBehaviour
 
     public void Reset()
     {
+        tf_Crosshair.localPosition = new Vector3(0, -30, 0);
         currentAngleX = 0;
         currentAngleY = 0; //리셋을 시켜줘야 원래 보던 각도로 안보고있음
-        
     }
 
     void Start()
@@ -54,15 +60,60 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        //마우스 움직임에 따라 업데이트 해줘야되므로 크로스헤어를 여기에 해준다.
-        if (!InteractionController.isInteract)//대화가 아닐 때만 이 기능들이 작동하도록
+    {   
+        if (!InteractionController.isInteract)//대화가 아닐 때만 이 기능들이 작동하도록, 가장 최우선적 조건문
         {
-            CrosshairMovig();
-            ViewMoving();
-            KeyViewMoving();
-            CameraLimit();
-            NotCamUI();
+            if (CameraController.onlyView)
+            {
+                //마우스 움직임에 따라 업데이트 해줘야되므로 크로스헤어를 여기에 해준다.
+                CrosshairMovig();
+                ViewMoving();
+                KeyViewMoving();
+                CameraLimit();
+                NotCamUI();
+                
+            }
+            else
+            {
+                FieldMoving();
+                FieldLooking();
+            }
+        }
+    }
+
+    void FieldMoving()
+    {
+        if (Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0)
+        {
+            Vector3 t_Dir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized; //y는 공중, 크기까지 정해지지 않도록 노말라이즈드 해준다.
+        
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                applySpeed = runSpeed;
+            }
+            else
+            {
+                applySpeed = walkSpped;
+            }
+
+            transform.Translate(t_Dir * applySpeed * Time.deltaTime, Space.Self); //1초에 원하는 applySpeed만큼 움직이도록. 그리고 어느방향이든 바라보고있는 방향으로 나아가도록 <-> world는 어느 방향이든 정해진 방향으로
+        }
+    }
+
+    void FieldLooking()
+    {
+        if (Input.GetAxisRaw("Mouse X") != 0) //마우스 좌우 오른쪽은 1 왼쪽은 -1을 리턴
+        {
+            float t_AngleY = Input.GetAxisRaw("Mouse X"); //플레이어 기준y가 마우스 기준 좌우임
+            Vector3 t_Rot = new Vector3(0, t_AngleY * fieldSensitivity, 0);
+            transform.rotation = Quaternion.Euler(transform.localEulerAngles + t_Rot);
+        }
+        if (Input.GetAxisRaw("Mouse Y") != 0)
+        {
+            float t_AngleX = Input.GetAxisRaw("Mouse Y");
+            currentAngleX -= t_AngleX;//빼주는 이유는 상하반전때문이다.
+            currentAngleX = Mathf.Clamp(currentAngleX, -fieldLookLimitX, fieldLookLimitX); //자기자신을 클램프
+            tf_Cam.localEulerAngles = new Vector3(currentAngleX, 0, 0); //이렇게 나온걸 x축만 건드릴 수 있도록
         }
     }
 
