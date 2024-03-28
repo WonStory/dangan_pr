@@ -209,7 +209,7 @@ public class InteractionController : MonoBehaviour
         Vector3 t_targetPos = hitInfo.transform.position; //부딫힌 녀석의 인포를 가져오고
         ps_QuestionEffect.GetComponent<QuestionEfeect>().SetTarget(t_targetPos); //붙여둔 스크립트를 가져와서 퍼블릭으로 설정한 셋타겟에 타겟포스를 넘겨준다.
         ps_QuestionEffect.transform.position = cam.transform.position;//캠의 위치로 바꿔준다.(현재 위치에서 던지는 것 처럼 하기위해)
-    
+
         StartCoroutine(WaitCollision());
     }
 

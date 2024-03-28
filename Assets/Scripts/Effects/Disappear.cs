@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Disappear : MonoBehaviour
 {
+
     [SerializeField] float disappearTime;
 
     void OnEnable()

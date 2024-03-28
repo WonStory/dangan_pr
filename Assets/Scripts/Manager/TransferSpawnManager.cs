@@ -39,7 +39,12 @@ public class TransferSpawnManager : MonoBehaviour
             Transform t_Spawn = locationDic[t_LocationName];
             PlayerController.instance.transform.position = t_Spawn.position;
             PlayerController.instance.transform.rotation = t_Spawn.rotation;
+            Camera.main.transform.localPosition = new Vector3(0,1,0.5f); //기본값으로 돌려버림
+            Camera.main.transform.localEulerAngles = Vector3.zero;
+            PlayerController.instance.Reset();
+
             spawnTiming = false;
+            StartCoroutine(theTM.Done()); //우선 위치를 이동시키고 페이드인을 한다.
         }
     }
 
